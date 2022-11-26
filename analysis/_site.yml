@@ -1,7 +1,7 @@
-name: "009_glue-rpackage"
+name: 009_glue-rpackage
 output_dir: ../docs
 navbar:
-  title: "009_glue-rpackage"
+  title: 009_glue-rpackage
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/ogorodriguez/009_glue-rpackage
 output:
   workflowr::wflow_html:
     toc: yes
