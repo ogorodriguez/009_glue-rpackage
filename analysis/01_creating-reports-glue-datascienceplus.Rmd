@@ -1,0 +1,102 @@
+---
+title: "Creating Reporting Templates with Glue in R"
+author: "LJ"
+date: "2022-11-26"
+output: html_document
+---
+
+## Introduction
+
+In this notebook I will use `glue` to create templates as indicated in:
+[Creating Reporting Templates with Glue in R.  DataScience+](https://datascienceplus.com/creating-reporting-template-with-glue-in-r/)
+
+Written by: [Abdil Majed Raja](https://datascienceplus.com/author/abdulmajed-raja/)
+
+## Using `glue`for reporting.
+
+Automating reports can be done programatically using the `glue`R package.  This
+package that interprets string literals in a fast and dependency-free way.  
+
+In short, it helps concatenate data within strings that updates as data evolves.
+
+Here, we'll see examples that will clarify the use of the package.
+
+## Loading `glue` and dataset
+
+```{r Installing glue}
+pacman::p_load(glue,
+               tidyverse,
+               janitor)
+
+```
+
+
+```{r create copy of mtcars}
+## Make a copy of mtcars, make a tibble and view it
+mtcars_test <- mtcars %>% 
+  rownames_to_column(var = "car") %>% 
+  as_tibble()
+  
+
+mtcars_test %>% 
+  head()
+
+```
+
+## First minimal reportng example
+
+We'll work out a first example of a report that outputs basic information of the 
+dataset we will be working with: mtcars
+
+```{r create sample report that shows information about the dataset}
+dset <- mtcars_test
+
+about_dataset <- 'Dataset information: \n\n This dataset has {nrow(dset)} rows and {ncol(dset)} columns. \n There {ifelse(sum(is.na(dset)) == 1, "is", "are")} {sum(is.na(dset))} Missing Value(s).'
+
+glue(about_dataset)
+
+```
+
+
+What `glue` is doing is taking the input string and showing the text with the info 
+extracted directly from the data set in turn.  
+
+With the same code we can extract information from any dataset we pass on to the 
+variable dset.  For example, let's try with a dataset form the Ames Housing package.  
+The raw dataset contains NAs that will be displayed.  
+
+```{r sample report with a different dataset with NAs}
+dset <- AmesHousing::ames_raw
+
+about_dataset <- 'Dataset information: \n\n This dataset has {nrow(dset)} rows and {ncol(dset)} columns. \n There {ifelse(sum(is.na(dset)) == 1, "is", "are")} {sum(is.na(dset))} Missing Value(s).'
+
+glue(about_dataset)
+
+```
+
+
+## Second example report content of the dataset
+
+We will write a sentence for the data of each row.
+
+```{r}
+mtcars_test %>% 
+  dplyr::slice_sample(n = 6) %>% 
+  glue_data("{car} has {cyl} cylinders and {hp} hp")
+  
+
+```
+`glue_data` iterates all the rows to bring the concatenation.  Using `glue()` only 
+would have thrown an error since it can only take one vector or string. 
+
+## Back to Home
+
+[Home](index.html)
+
+
+
+
+
+
+
+
